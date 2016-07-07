@@ -42,8 +42,8 @@ int main(int argc, const char * argv[])
 	//std::vector <int> vNums {3, 2, 1, 1, -8, 1, 1, 2, 3};
 	//std::vector <int> vNums {12, 99, 99, -99, -27, 0, 0, 0, -3, 10};
 	//std::vector <int> vNums {-2, 1, -3, 4, -1, 2, 1, -5, 4};
-	std::vector <int> vNums {-97, 35, 21, -35, 18, -99, 56, 74, 21, 20};
-	//std::vector <int> vNums {29, -72, -6, -22, -7, -51, -21, -75, -38, -13};
+	//std::vector <int> vNums {-97, 35, 21, -35, 18, -99, 56, 74, 21, 20};
+	std::vector <int> vNums {29, -72, -6, -22, -7, -51, -21, -75, -38, -13};
 	
 	/*
 	// Generate random numbers for testing
@@ -57,7 +57,19 @@ int main(int argc, const char * argv[])
 	}
 	*/
 	
-	
+		std::cout << "Original numbers: " << "[";
+	for (int i = 0; i < vNums.size(); i++) {
+				
+				std::cout << vNums[i];
+				
+				if(i<vNums.size()-1) {
+				
+						std::cout<<", ";
+					}
+					
+			}
+			
+	std::cout << "]" << std::endl;
 	
 	
 	result = enumeration(vNums);
@@ -126,13 +138,13 @@ int enumeration(std::vector<int>& vNums) {
 		for (int i = left; i <= right; i++) {
 		
 			std::cout << vNums[i];
-			if(i<right) {
+			if(i<right-1) {
 			 std::cout<<", ";
 			}
 			
 		}
 		std::cout << "]"<<std::endl;
-		std::cout<< "SUM: " << maxSum << std::endl;
+		std::cout<< "MAX SUM: " << maxSum << std::endl;
 	   return 0;
   
 	}
@@ -149,20 +161,6 @@ int betterEnumeration(std::vector<int>& vNums) {
 	maxSum = 0;
 	std::cout << "\n***** Better Enumeration *****\n" << std::endl;
 	
-	
-	std::cout << "Original numbers: " << "[";
-	for (int i = 0; i < vNums.size(); i++) {
-				
-				std::cout << vNums[i];
-				
-				if(i<vNums.size()-1) {
-				
-						std::cout<<", ";
-					}
-					
-			}
-			
-	std::cout << "]" << std::endl;
 	
 	
 		// enumerate through, saving sum for future use
@@ -185,9 +183,6 @@ int betterEnumeration(std::vector<int>& vNums) {
 			}
 		
 	}
-	
-	
-		
 		
         std::cout << "SubArray with max sum: " << std::endl;
 		
@@ -195,13 +190,13 @@ int betterEnumeration(std::vector<int>& vNums) {
 		for (int i = left; i <= right; i++) {
 		
 			std::cout << vNums[i];
-			if(i<vNums.size()-1) {
+			if(i<right-1) {
 			 std::cout<<", ";
 			}
 			
 		}
 		std::cout << "]"<<std::endl;
-		std::cout<< "Max Sum Subarray: " << maxSum << std::endl;
+		std::cout<< "MAX SUM: " << maxSum << std::endl;
 	   return 0;
   
 	}
@@ -235,7 +230,7 @@ int linear(std::vector<int>& vNums) {
     left = right = 0;
 	
 	for(int i = 0; i < vNums.size(); i++) {
-		left = i;
+		//left = i;
 		right = i;
 		// left and right are both 0 coming in
 		sum = sum + vNums[i];  // add current value to running sum
@@ -246,7 +241,7 @@ int linear(std::vector<int>& vNums) {
 			{
 				//sum = vNums[i];
 				sum = 0;
-				//left = i+1;
+				left = i+1;
 				//right = i+1;   
 				
 				
@@ -259,11 +254,11 @@ int linear(std::vector<int>& vNums) {
 			}
 			
 		  
-		 std::cout << "i= " << i << " current " << vNums[i] << "   Sum: " << sum << "  maxSum: " << maxSum << " minIdx: " << minIdx << "  maxIdx: " << maxIdx << std::endl;
+		 //std::cout << "i= " << i << " current " << vNums[i] << "   Sum: " << sum << "  maxSum: " << maxSum << " minIdx: " << minIdx << "  maxIdx: " << maxIdx << std::endl;
 	    
 		  
 	}
-		std::cout << "Min index: " << minIdx << "    Max index: " << maxIdx << std::endl;
+		//std::cout << "Min index: " << minIdx << "    Max index: " << maxIdx << std::endl;
 		
 
     /* PRINTING RESULTS FOR TESTING */
@@ -281,7 +276,7 @@ int linear(std::vector<int>& vNums) {
 			
 	}
 	std::cout << "]"<<std::endl;
-	std::cout<< "Max Sum Subarray: " << maxSum << std::endl;
+	std::cout<< "MAX SUM: " << maxSum << std::endl;
 	return 0;
 
 
