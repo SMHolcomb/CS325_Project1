@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include <string>
+#include <sstream>
 #include <fstream>
 #include <ctype.h>
 #include <vector>
@@ -31,10 +32,14 @@ int linear(std::vector<int> &);
  ** Post-Conditions:	None
  ***************************************************************************************************/
 
-int main(int argc, const char * argv[])
+int main(int argc, char * argv[])
 {
 
 	int rNum, result, result2, result3, result4;
+	std::string vector;
+	int currNum;  // current number being read in from .txt file
+	std::vector <int> vNums; 
+	
 	//std::vector <int> vNums {1, 4, -9, 8, 1, 3, 3, 1, -1, -4, -6, 2, 8, 19, -10, -11};
 	//std::vector <int> vNums {2, 9, 8, 6, 5, -11, 9, -11, 7, 5, -1, -8, -3, 7, -2};
 	//std::vector <int> vNums {10, -11, -1, -9, 33, -45, 23, 24, -1, -7, -8, 19};
@@ -43,22 +48,34 @@ int main(int argc, const char * argv[])
 	//std::vector <int> vNums {12, 99, 99, -99, -27, 0, 0, 0, -3, 10};
 	//std::vector <int> vNums {-2, 1, -3, 4, -1, 2, 1, -5, 4};
 	//std::vector <int> vNums {-97, 35, 21, -35, 18, -99, 56, 74, 21, 20};
-	std::vector <int> vNums {29, -72, -6, -22, -7, -51, -21, -75, -38, -13};
+	//std::vector <int> vNums {29, -72, -6, -22, -7, -51, -21, -75, -38, -13};
 	
-	/*
+	
 	// Generate random numbers for testing
-	std::vector <int> vNums;
+	
+	
+	std::vector <int> inputSize = {100,200,400, 600, 800, 1000, 2000, 5000, 7000, 10000};
+	
 	srand((unsigned)time(NULL));
 	
-	for (int i = 0; i < 10; i++) {
-		rNum = rand()%199+ (-100);
-		vNums.push_back(rNum);
+	for (int j = 0; j < 11; j++) {
 	
-	}
-	*/
+			for (int i = 0; i < j; i++) {
+				rNum = rand()%199+ (-100);  //includes negative numbers as well
+				vNums.push_back(rNum);
+			
+				}
+		
+			}
+					
+			
+			
+
+				
+	
 	
 		std::cout << "Original numbers: " << "[";
-	for (int i = 0; i < vNums.size(); i++) {
+		for (int i = 0; i < vNums.size(); i++) {
 				
 				std::cout << vNums[i];
 				
@@ -72,20 +89,63 @@ int main(int argc, const char * argv[])
 	std::cout << "]" << std::endl;
 	
 	
-	result = enumeration(vNums);
-	result2 = betterEnumeration(vNums);
+	enumeration(vNums);
+	betterEnumeration(vNums);
 	//result3 = divideAndConquer(vNums, 0, vNums.size());  // not working yet
-	result4 = linear(vNums);  // failing on certain arrays. Sum appears correct, but subarray not displaying correctly.
+	linear(vNums); 
 	
 		
 		
 		
-		/*  // READ IN FROM FILE - INCOMPLETE
+		/*  // READ IN FROM FILE - INCOMPLETE */
 	
-		*/  // END READ IN FROM FILE
+			/*
+			//std::ifstream inFile(argv[1]);  // use this for running from flip/command i.e. ./main infile.txt
+			
+			std::ifstream inFile("MSS_TestProblems.txt");
+			std::ofstream outFile("MSS_Results.txt");
+			
+			// check for error and exit
+			
+			while (!inFile.eof()) {
+				
+				getline(inFile, vector);
+				
+				std::stringstream inStream(vector);
+				
+				if (inStream.peek() == '[') {  // need single quotes here
+				
+					inStream.ignore();
+					
+					while(inStream >> currNum) {
+					
+					  vNums.push_back(currNum);
+					 
+					  if(inStream.peek() == ' ' || inStream.peek() == ',') {
+					  
+						inStream.ignore();
+					  }
+					 
+					}
+				}
+				
+			
+			}  //finish reading in
+			
+			//test print vector
+			for(int i = 0; i < vNums.size(); i++) {
+			
+				std::cout << vNums[i] << " " << std::endl;
+			}
 		
-	
-       	 
+		
+		
+		inFile.close();
+		outFile.close();*/
+       /*  // END READ IN FROM FILE */
+		 
+			
+				
       return 0;
 
 }
@@ -138,7 +198,7 @@ int enumeration(std::vector<int>& vNums) {
 		for (int i = left; i <= right; i++) {
 		
 			std::cout << vNums[i];
-			if(i<right-1) {
+			if(i<right) {
 			 std::cout<<", ";
 			}
 			
@@ -190,7 +250,7 @@ int betterEnumeration(std::vector<int>& vNums) {
 		for (int i = left; i <= right; i++) {
 		
 			std::cout << vNums[i];
-			if(i<right-1) {
+			if(i<right) {
 			 std::cout<<", ";
 			}
 			
