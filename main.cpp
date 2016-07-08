@@ -54,45 +54,52 @@ int main(int argc, char * argv[])
 	// Generate random numbers for testing
 	
 	
-	std::vector <int> inputSize = {100,200,400, 600, 800, 1000, 2000, 5000, 7000, 10000};
+	//std::vector <int> inputSize = {100,200,400, 600, 800, 1000, 2000, 5000, 7000, 10000};
+	std::vector <int> inputSize = {1,2,4, 6, 8, 10, 20, 50};
 	
 	srand((unsigned)time(NULL));
 	
-	for (int j = 0; j < 11; j++) {
-	
-			for (int i = 0; i < j; i++) {
+	// 10 different input arrays of 10 different n sizes -- this isn't looping correctly yet... should be 10 of array size 1, 10 of array size 2 etc.. 
+	for (int j = 0; j < 10; j++) {
+			vNums = {};
+			for (int i = 0; i<inputSize[j]; i++) {
 				rNum = rand()%199+ (-100);  //includes negative numbers as well
 				vNums.push_back(rNum);
 			
 				}
 		
-			}
-					
-			
-			
-
+		  // process here? 
+		
+		  std::cout << "\n\nNew Array: " << "[";
+			for (int k = 0; k < vNums.size(); k++) {
 				
-	
-	
-		std::cout << "Original numbers: " << "[";
-		for (int i = 0; i < vNums.size(); i++) {
+				std::cout << vNums[k];
 				
-				std::cout << vNums[i];
-				
-				if(i<vNums.size()-1) {
+				if(k<vNums.size()-1) {
 				
 						std::cout<<", ";
 					}
-					
-			}
+				}
 			
-	std::cout << "]" << std::endl;
-	
-	
-	enumeration(vNums);
-	betterEnumeration(vNums);
+			std::cout << "]" << std::endl;
+			
+			enumeration(vNums);
+			betterEnumeration(vNums);
+			//divideAndConquer(vNums,0,vNums.size()); // not working yet
+			linear(vNums); 
+			
+			
+	} // end j outer loop
+		  
+		  
+		
+			//}
+					
+      // moved these up in test loop
+	//enumeration(vNums);
+	//betterEnumeration(vNums);
 	//result3 = divideAndConquer(vNums, 0, vNums.size());  // not working yet
-	linear(vNums); 
+	//linear(vNums);
 	
 		
 		
@@ -166,6 +173,7 @@ int enumeration(std::vector<int>& vNums) {
 	sum = 0;
 	maxSum = 0;
 
+	std::cout << "\n***** Enumeration *****" << std::endl;
 
 		 left = right = 0;
 		 sum = vNums[0];
@@ -191,8 +199,7 @@ int enumeration(std::vector<int>& vNums) {
 				}
 			}
 			
-		std::cout << "\n***** Enumeration *****\n" << std::endl;
-        std::cout << "SubArray with max sum: " << std::endl;
+		
 		
 		std::cout << "[";
 		for (int i = left; i <= right; i++) {
@@ -204,7 +211,7 @@ int enumeration(std::vector<int>& vNums) {
 			
 		}
 		std::cout << "]"<<std::endl;
-		std::cout<< "MAX SUM: " << maxSum << std::endl;
+		std::cout << maxSum << std::endl;
 	   return 0;
   
 	}
@@ -219,7 +226,7 @@ int betterEnumeration(std::vector<int>& vNums) {
 	int left, right, sum, maxSum;
 	sum = 0;
 	maxSum = 0;
-	std::cout << "\n***** Better Enumeration *****\n" << std::endl;
+	std::cout << "\n***** Better Enumeration *****" << std::endl;
 	
 	
 	
@@ -239,12 +246,12 @@ int betterEnumeration(std::vector<int>& vNums) {
 						right = j;
 
 					}
-				//std::cout << "current i: " << vNums[i] << "  current j: " << vNums[j] << "  sum: " << sum << "  maxSum: " << maxSum << std::endl;
+				
 			}
 		
 	}
 		
-        std::cout << "SubArray with max sum: " << std::endl;
+       
 		
 		std::cout << "[";
 		for (int i = left; i <= right; i++) {
@@ -256,7 +263,8 @@ int betterEnumeration(std::vector<int>& vNums) {
 			
 		}
 		std::cout << "]"<<std::endl;
-		std::cout<< "MAX SUM: " << maxSum << std::endl;
+		
+		std::cout << maxSum << std::endl;
 	   return 0;
   
 	}
@@ -265,7 +273,7 @@ int betterEnumeration(std::vector<int>& vNums) {
 		Divide and Conquer
 *************************************************/
 
-//std::vector<int> divideAndConquer(std::vector<int>& vNums, int left, int right) {
+
 int divideAndConquer(std::vector<int>& vNums, int left, int right) {
 
 
@@ -283,26 +291,26 @@ int divideAndConquer(std::vector<int>& vNums, int left, int right) {
 
 int linear(std::vector<int>& vNums) {
 	
-	std::cout << "\n*****  Linear *****\n" << std::endl;
+	
 	int sum, maxSum, left, right, minIdx, maxIdx;
 	sum = maxSum = 0; 
 	minIdx = maxIdx = 0;
     left = right = 0;
+	std::cout << "\n*****  Linear *****" << std::endl;
 	
 	for(int i = 0; i < vNums.size(); i++) {
-		//left = i;
+		
 		right = i;
-		// left and right are both 0 coming in
-		sum = sum + vNums[i];  // add current value to running sum
+		sum = sum + vNums[i];
 		
 		
 		
 		   if (sum < 0)    
 			{
-				//sum = vNums[i];
+				
 				sum = 0;
 				left = i+1;
-				//right = i+1;   
+				 
 				
 				
 			}
@@ -312,19 +320,11 @@ int linear(std::vector<int>& vNums) {
 				maxIdx = i;
 				minIdx = left;
 			}
-			
-		  
-		 //std::cout << "i= " << i << " current " << vNums[i] << "   Sum: " << sum << "  maxSum: " << maxSum << " minIdx: " << minIdx << "  maxIdx: " << maxIdx << std::endl;
-	    
+			 
 		  
 	}
-		//std::cout << "Min index: " << minIdx << "    Max index: " << maxIdx << std::endl;
-		
-
-    /* PRINTING RESULTS FOR TESTING */
-
 	
-	std::cout << "SubArray with max sum: " << std::endl;
+
 		
 	std::cout << "[";
 	for (int i = minIdx; i <= maxIdx; i++) {
@@ -336,7 +336,7 @@ int linear(std::vector<int>& vNums) {
 			
 	}
 	std::cout << "]"<<std::endl;
-	std::cout<< "MAX SUM: " << maxSum << std::endl;
+	std::cout << maxSum << std::endl;
 	return 0;
 
 
