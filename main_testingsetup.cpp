@@ -1,6 +1,6 @@
 
 /*************************************************************************************************
- ** Program Filename:	main.cpp
+ ** Program Filename:	 main.cpp
  ** Author:				Group 24
  ** Date:				July 4, 2016
  ** Description:		main implementation file for CS324 Project 1 
