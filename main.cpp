@@ -23,6 +23,7 @@ int betterEnumeration(std::vector<int> &);
 int divideAndConquerHelper(std::vector<int> &, int *, int *);
 int divideAndConquer(std::vector<int> &);
 int linear(std::vector<int> &);
+void fileOut(std::string, std::vector<int> &, int, int, int);
 void testRunTime();
 void testManual();
 
@@ -44,7 +45,7 @@ int main(int argc, char * argv[])
 	std::string line;
 	int currNum;
 	std::vector<int> vNums;
-	std::ifstream inFile;   //("MSS_Problems.txt");
+	std::ifstream inFile;   
 	std::ofstream outFile; //("MSS_Results.txt");
 	
 	inFile.open("MSS_TestProblems.txt");
@@ -79,12 +80,13 @@ int main(int argc, char * argv[])
 					std::cout << vNums[i] << ", ";
 			}
 			std::cout << "]" << std::endl << std::endl;
+			fileOut("\n*** Original Array ***", vNums, 0, vNums.size()-1,NULL);
 			enumeration(vNums);
 			betterEnumeration(vNums);
 			divideAndConquer(vNums);
 			linear(vNums);
 				
-		// a-ha! need to clear the vector before next loop..
+		// clear the vector before next loop..
 		vNums.clear();
 		
 }  // end getline
@@ -140,6 +142,7 @@ int enumeration(std::vector<int>& vNums) {
 			}
 			
 		
+		fileOut("Enumeration:", vNums,left, right, maxSum);
 		
 		std::cout << "[";
 		for (int i = left; i <= right; i++) {
@@ -191,7 +194,7 @@ int betterEnumeration(std::vector<int>& vNums) {
 		
 	}
 		
-       
+       fileOut("Better Enumeration:", vNums,left, right, maxSum);
 		
 		std::cout << "[";
 		for (int i = left; i <= right; i++) {
@@ -267,6 +270,8 @@ int divideAndConquer(std::vector<int> &vNum)
 
 	int sum = divideAndConquerHelper(vNum, &left, &right);
 	
+	 fileOut("Divide and Conquer:", vNum,left, right, sum);
+	
 	std::cout << "Divide And Conquer"<<std::endl;;
 	std::cout << "[";
 	for (int i = left; i <= right; ++i) {
@@ -322,7 +327,7 @@ int linear(std::vector<int>& vNums) {
 		  
 	}
 	
-
+    fileOut("Linear:", vNums, minIdx, maxIdx, maxSum);
 		
 	std::cout << "[";
 	for (int i = minIdx; i <= maxIdx; i++) {
@@ -337,6 +342,57 @@ int linear(std::vector<int>& vNums) {
 	std::cout << maxSum << std::endl;
 	return 0;
 
+
+
+}
+
+/************************************************
+		export to .txt file
+ Generates 10 random vectors of 10 different n values
+  for each of 4 algorithms
+  
+*************************************************/
+
+void fileOut(std::string alg, std::vector<int>& vNums, int left, int right, int maxSum) {
+		
+		std::ofstream outFile; //("MSS_Results.txt");
+		
+		outFile.open("MSS_ResultsTESTING.txt", std::ofstream::app);
+		//outFile.open("MSS_Results.txt", std::ofstream::app);
+
+		/* //  moved this as a call from main function so it will only print once for each array
+		// export original array
+		outFile << "Original Array: ";
+		outFile << "[";
+		//int size = vNums.size();
+		for (int i = 0; i < vNums.size() - 1; i++) {
+			outFile << vNums[i] << ", ";
+		}
+		int end = vNums.size()-1;
+		outFile << vNums[end] << "]" << std::endl;
+		*/
+		
+		//export subarray
+        outFile << alg << std::endl;
+		outFile << "[";
+		for (int i = left; i <= right; i++) {
+		
+			outFile << vNums[i];
+			if(i<right) {
+			 outFile <<", ";
+			}
+		 }
+		outFile << "]"<<std::endl;
+		if(alg == "\n*** Original Array ***") {
+		outFile << std::endl;
+		}  // this is a hacky way of getting an extra line after the original array prints
+
+	
+		//export maxSum
+		if (maxSum != NULL) {
+		outFile << maxSum << std::endl;
+		}
+		outFile.close();			
 
 
 }
@@ -409,7 +465,7 @@ void testManual() {
 	
 	enumeration(vNums);
 	betterEnumeration(vNums);
-	//divideAndConquer(vNums,0,vNums.size()); // not working yet
+	divideAndConquer(vNums); 
 	linear(vNums);
 	
 }
