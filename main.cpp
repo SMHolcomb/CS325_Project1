@@ -267,7 +267,6 @@ int divideAndConquer(std::vector<int> &vNum)
 
 	int sum = divideAndConquerHelper(vNum, &left, &right);
 	
-<<<<<<< HEAD
 	std::cout << "Divide And Conquer"<<std::endl;;
 	std::cout << "[";
 	for (int i = left; i <= right; ++i) {
@@ -280,14 +279,6 @@ int divideAndConquer(std::vector<int> &vNum)
 		
 	//std::cout << std::endl << "Max sum: " << sum << std::endl;
 	std::cout << sum << std::endl;
-=======
-	std::cout << "Array: ";
-	
-	for (int i = left; i <= right; ++i)
-		std::cout << vNum.at(i) << ' ';
-		
-	std::cout << std::endl << "Max sum: " << sum << std::endl;
->>>>>>> FETCH_HEAD
 	
 	return 0;
 }
@@ -394,14 +385,9 @@ void testRunTime() {
 			
 			enumeration(vNums);
 			betterEnumeration(vNums);
-<<<<<<< HEAD
 			divideAndConquer(vNums); 
 			linear(vNums);
 			
-=======
-			divideAndConquer(vNums); // not working yet
-			linear(vNums); 
->>>>>>> FETCH_HEAD
 		} // end x
 			
 	} // end n outer loop
