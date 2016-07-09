@@ -20,7 +20,8 @@
 //prototypes
 int enumeration(std::vector<int> &);
 int betterEnumeration(std::vector<int> &);
-int divideAndConquer(std::vector<int> &, int, int);
+int divideAndConquerHelper(std::vector<int> &, int *, int *);
+int divideAndConquer(std::vector<int> &);
 int linear(std::vector<int> &);
 void testRunTime();
 void testManual();
@@ -36,60 +37,61 @@ void testManual();
 int main(int argc, char * argv[])
 {
 
-	
-	
 		
 	
-	testRunTime(); // generates 10 * n(10) * 4 random # arrays for logging run times
+	//testRunTime(); // generates 10 * n(10) * 4 random # arrays for logging run times
 	//testManual(); // for manually entered vectors to test specific sizes or elements
+	std::string line;
+	int currNum;
+	std::vector<int> vNums;
+	std::ifstream inFile;   //("MSS_Problems.txt");
+	std::ofstream outFile; //("MSS_Results.txt");
 	
-			
-		/*  // READ IN FROM FILE - INCOMPLETE */
-	
-			/*
-			std::string vector;
-			int currNum;  // current number being read in from .txt file
-			//std::ifstream inFile(argv[1]);  // use this for running from flip/command i.e. ./main infile.txt
-			
-			std::ifstream inFile("MSS_TestProblems.txt");
-			std::ofstream outFile("MSS_Results.txt");
-			
-			// check for error and exit
-			
-			while (!inFile.eof()) {
-				
-				getline(inFile, vector);
-				
-				std::stringstream inStream(vector);
-				
-				if (inStream.peek() == '[') {  // need single quotes here
-				
-					inStream.ignore();
-					
-					while(inStream >> currNum) {
-					
-					  vNums.push_back(currNum);
-					 
-					  if(inStream.peek() == ' ' || inStream.peek() == ',') {
-					  
-						inStream.ignore();
-					  }
-					}
-				}
-				
-			}  //finish reading in
-			
-			//test print vector
-			for(int i = 0; i < vNums.size(); i++) {
-			
-				std::cout << vNums[i] << " " << std::endl;
-			}
+	inFile.open("MSS_TestProblems.txt");
+	//inFile.open("MSS_Problems.txt");
+
+
+	while(std::getline(inFile, line)) {
+		std::stringstream inStream(line);
+		inStream.ignore();
+		while(inStream >> currNum) {
+			vNums.push_back(currNum);
+			//ignore brackets and commas
+			//if (inStream.peek() == '['){  // shouldn't ignore this
+				//inStream.ignore();
+			 //}
+			 if(inStream.peek() == ',') {
+				inStream.ignore();
+			 }
+			 else if(inStream.peek() == ']') {
+				break;
+			 }
 		
-		inFile.close();
-		outFile.close();
-         // END READ IN FROM FILE 
-		 */
-			
+		} //end while inStream>currNum
+								
+		// display the starting array.
+			std::cout << std::endl << "***** Original Array ***** " << std::endl;
+			std::cout << "[";
+			for(int i = 0; i < vNums.size(); i++){
+				if(i == vNums.size()-1)
+					std::cout << vNums[i];
+				else
+					std::cout << vNums[i] << ", ";
+			}
+			std::cout << "]" << std::endl << std::endl;
+			enumeration(vNums);
+			betterEnumeration(vNums);
+			divideAndConquer(vNums);
+			linear(vNums);
+				
+		// a-ha! need to clear the vector before next loop..
+		vNums.clear();
+		
+}  // end getline
+	
+	
+	
+
 				
       return 0;
 
@@ -111,7 +113,7 @@ int enumeration(std::vector<int>& vNums) {
 	sum = 0;
 	maxSum = 0;
 
-	std::cout << "\n***** Enumeration *****" << std::endl;
+	std::cout << "Enumeration:" << std::endl;
 
 		 left = right = 0;
 		 //sum = vNums[0];
@@ -164,7 +166,7 @@ int betterEnumeration(std::vector<int>& vNums) {
 	int left, right, sum, maxSum;
 	sum = 0;
 	maxSum = 0;
-	std::cout << "\n***** Better Enumeration *****" << std::endl;
+	std::cout << "Better Enumeration:" << std::endl;
 	
 	
 	
@@ -211,17 +213,75 @@ int betterEnumeration(std::vector<int>& vNums) {
 		Divide and Conquer
 *************************************************/
 
+int divideAndConquerHelper(std::vector<int> &vNum, int *left, int *right)
+{
+	int diff = *right - *left;
 
-int divideAndConquer(std::vector<int>& vNums, int left, int right) {
+	if(diff == 0)	//single value
+		return vNum.at(*left);
+	
+	int mid = *left + (diff) / 2;
 
+	int startL = *left;
+	int endL = mid;
+	int startR = mid + 1;
+	int endR = *right;	
 
+	//find max subarray in each half of vector
+	int lsum = divideAndConquerHelper(vNum, &startL, &endL);
+	int rsum = divideAndConquerHelper(vNum, &startR, &endR);
 
-	return 0;
+	int total = lsum + rsum;
 
+	//check right and left subarrays are next to one another in vNum
+	if((total > lsum && lsum > rsum) || (total > rsum && rsum > lsum))
+	{
+		if(endL == startR - 1)
+		{
+			*left = startL;
+			*right = endR;
+			return total;
+		}
+	}
 
+	//check if sum of left or right subarray is greater, return subarray with larger sum
+	if(lsum > rsum)
+	{
+		*left = startL;
+		*right = endL;
+		return lsum;
+	}
+	else
+	{
+		*left = startR;
+		*right = endR;
+		return rsum;
+	}
 }
 
 
+int divideAndConquer(std::vector<int> &vNum)
+{
+	int left = 0;
+	int right = vNum.size() - 1;
+
+	int sum = divideAndConquerHelper(vNum, &left, &right);
+	
+	std::cout << "Divide And Conquer"<<std::endl;;
+	std::cout << "[";
+	for (int i = left; i <= right; ++i) {
+		std::cout << vNum.at(i);
+		if( i <right) {
+			 std::cout<<", ";
+			}
+       }
+	std::cout << "]" << std::endl;
+		
+	//std::cout << std::endl << "Max sum: " << sum << std::endl;
+	std::cout << sum << std::endl;
+	
+	return 0;
+}
 
 /************************************************
 		Linear Time
@@ -234,7 +294,7 @@ int linear(std::vector<int>& vNums) {
 	sum = maxSum = 0; 
 	minIdx = maxIdx = 0;
     left = right = 0;
-	std::cout << "\n*****  Linear *****" << std::endl;
+	std::cout << "Linear" << std::endl;
 	
 	for(int i = 0; i < vNums.size(); i++) {
 		
@@ -310,7 +370,7 @@ void testRunTime() {
 			
 				}
 		
-		  std::cout << "\n\nNew Array: " << "[";
+		  std::cout << "\nOriginal Array: " << "[";
 			for (int k = 0; k < vNums.size(); k++) {
 				
 				std::cout << vNums[k];
@@ -325,8 +385,9 @@ void testRunTime() {
 			
 			enumeration(vNums);
 			betterEnumeration(vNums);
-			//divideAndConquer(vNums,0,vNums.size()); // not working yet
-			linear(vNums); 
+			divideAndConquer(vNums); 
+			linear(vNums);
+			
 		} // end x
 			
 	} // end n outer loop
