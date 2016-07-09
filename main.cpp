@@ -16,6 +16,7 @@
 #include <vector>
 #include <stdlib.h>
 #include <math.h>
+#include <climits>
 
 //prototypes
 int enumeration(std::vector<int> &);
@@ -228,23 +229,48 @@ int divideAndConquerHelper(std::vector<int> &vNum, int *left, int *right)
 	int startL = *left;
 	int endL = mid;
 	int startR = mid + 1;
-	int endR = *right;	
+	int endR = *right;		
 
 	//find max subarray in each half of vector
 	int lsum = divideAndConquerHelper(vNum, &startL, &endL);
 	int rsum = divideAndConquerHelper(vNum, &startR, &endR);
 
-	int total = lsum + rsum;
+	//calculate sum for subarray that crosses the midpoint
+	int sum = 0;
+	int lmid = INT_MIN;
+	int rmid = INT_MIN;
+	int lbound = mid;
+	int rbound = mid + 1;
 
-	//check right and left subarrays are next to one another in vNum
-	if((total > lsum && lsum > rsum) || (total > rsum && rsum > lsum))
+	//sum each value starting at midpoint
+	for(int i = mid; i >= startL; --i)
 	{
-		if(endL == startR - 1)
+		sum += vNum.at(i);
+		if(sum > lmid)
 		{
-			*left = startL;
-			*right = endR;
-			return total;
+			lbound = i;
+			lmid = sum;
 		}
+	}
+	sum = 0;
+	for(int i = mid + 1; i <= endR; ++i)
+	{
+		sum += vNum.at(i);
+		if(sum > rmid)
+		{
+			rbound = i;
+			rmid = sum;
+		}
+	}
+	
+	int midsum = lmid + rmid;
+
+	//check if sum across midpoint greater than sum in each half
+	if(midsum > lsum && midsum > rsum)
+	{
+		*left = lbound;
+		*right = rbound;
+		return midsum;
 	}
 
 	//check if sum of left or right subarray is greater, return subarray with larger sum
