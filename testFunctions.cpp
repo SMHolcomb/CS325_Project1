@@ -325,7 +325,7 @@ void testManual() {
 	
 	enumeration(vNums);
 	betterEnumeration(vNums);
-	divideAndConquer(vNums);µ
+	divideAndConquer(vNums);
 	linear(vNums);
 	
 }
