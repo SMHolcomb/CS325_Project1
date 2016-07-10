@@ -10,4 +10,4 @@
 program: 
 	g++ -o MSS main.cpp
 clean:
-	\rm *.o *. MSS
+	rm MSS
