@@ -1,8 +1,8 @@
 
 /*************************************************************************************************
  ** Program Filename:	main.cpp
- ** Author:				Group 24
- ** Date:				July 4, 2016
+ ** Authors:			Group 24 - Connor Pacala, Kelsey Bartlett, Stephanie Holcomb
+ ** Date:				July 10, 2016
  ** Description:		main implementation file for CS324 Project 1 
  ** Input:				input .txt file
  ** Output:				output .txt file
@@ -25,8 +25,7 @@ int divideAndConquerHelper(std::vector<int> &, int *, int *);
 int divideAndConquer(std::vector<int> &);
 int linear(std::vector<int> &);
 void fileOut(std::string, std::vector<int> &, int, int, int);
-void testRunTime();
-void testManual();
+
 
 /*************************************************************************************************
  ** Function:			main
@@ -40,18 +39,13 @@ int main(int argc, char * argv[])
 {
 
 		
-	
-	//testRunTime(); // generates 10 * n(10) * 4 random # arrays for logging run times
-	//testManual(); // for manually entered vectors to test specific sizes or elements
 	std::string line;
 	int currNum;
 	std::vector<int> vNums;
 	std::ifstream inFile;   
-	std::ofstream outFile; //("MSS_Results.txt");
-	
-	inFile.open("MSS_TestProblems.txt");
-	//inFile.open("MSS_Problems.txt");
-
+	std::ofstream outFile;
+		
+	inFile.open("MSS_Problems.txt");
 
 	while(std::getline(inFile, line)) {
 		std::stringstream inStream(line);
@@ -59,7 +53,7 @@ int main(int argc, char * argv[])
 		while(inStream >> currNum) {
 			vNums.push_back(currNum);
 			//ignore brackets and commas
-			//if (inStream.peek() == '['){  // shouldn't ignore this
+			//if (inStream.peek() == '['){ 
 				//inStream.ignore();
 			 //}
 			 if(inStream.peek() == ',') {
@@ -69,9 +63,9 @@ int main(int argc, char * argv[])
 				break;
 			 }
 		
-		} //end while inStream>currNum
+		}
 								
-		// display the starting array.
+		// display the original array to console
 			std::cout << std::endl << "***** Original Array ***** " << std::endl;
 			std::cout << "[";
 			for(int i = 0; i < vNums.size(); i++){
@@ -87,14 +81,11 @@ int main(int argc, char * argv[])
 			divideAndConquer(vNums);
 			linear(vNums);
 				
-		// clear the vector before next loop..
+		// clear the vector before next loop
 		vNums.clear();
 		
-}  // end getline
+ }  // end getline
 	
-	
-	
-
 				
       return 0;
 
@@ -119,7 +110,6 @@ int enumeration(std::vector<int>& vNums) {
 	std::cout << "Enumeration:" << std::endl;
 
 		 left = right = 0;
-		 //sum = vNums[0];
 		 
 		 for (int i = 0; i < vNums.size(); ++i) {
 		 
@@ -160,9 +150,13 @@ int enumeration(std::vector<int>& vNums) {
   
 	}
 
-/************************************************
-		betterEnumeration
-*************************************************/
+/*************************************************************************************************
+ ** Function:			Maximum Sum Subarray - Better Enumeration Method
+ ** Description:		
+ ** Parameters:			None
+ ** Pre-Conditions:		(assumes a .txt file exists and it is comma delimited)
+ ** Post-Conditions:	None
+ ***************************************************************************************************/
 
 int betterEnumeration(std::vector<int>& vNums) {
 
@@ -174,7 +168,7 @@ int betterEnumeration(std::vector<int>& vNums) {
 	
 	
 	
-		// enumerate through, saving sum for future use
+	// enumerate through, saving sum for future use
 	 left = right = 0;
 	  sum = vNums[0];
 	 
@@ -213,9 +207,14 @@ int betterEnumeration(std::vector<int>& vNums) {
   
 	}
 
-/************************************************
-		Divide and Conquer
-*************************************************/
+/*************************************************************************************************
+ ** Function:			Maximum Sum Subarray - Divide and Conquer Method
+ ** Description:		
+ ** Parameters:			None
+ ** Pre-Conditions:		(assumes a .txt file exists and it is comma delimited)
+ ** Post-Conditions:	None
+ ***************************************************************************************************/
+
 
 int divideAndConquerHelper(std::vector<int> &vNum, int *left, int *right)
 {
@@ -308,15 +307,18 @@ int divideAndConquer(std::vector<int> &vNum)
        }
 	std::cout << "]" << std::endl;
 		
-	//std::cout << std::endl << "Max sum: " << sum << std::endl;
 	std::cout << sum << std::endl;
 	
 	return 0;
 }
 
-/************************************************
-		Linear Time
-*************************************************/
+/*************************************************************************************************
+ ** Function:			Maximum Sum Subarray - Linear Method
+ ** Description:		
+ ** Parameters:			None
+ ** Pre-Conditions:		(assumes a .txt file exists and it is comma delimited)
+ ** Post-Conditions:	None
+ ***************************************************************************************************/
 
 int linear(std::vector<int>& vNums) {
 	
@@ -372,32 +374,23 @@ int linear(std::vector<int>& vNums) {
 
 }
 
-/************************************************
-		export to .txt file
- Generates 10 random vectors of 10 different n values
-  for each of 4 algorithms
-  
-*************************************************/
+
+/*************************************************************************************************
+ ** Function:			Maximum Sum Subarray - Export to .txt file
+ ** Description:		exports original array and, the subarray and maxSum results for all 4 algorithms.
+ ** Parameters:			None
+ ** Pre-Conditions:		
+ ** Post-Conditions:	None
+ ***************************************************************************************************/
 
 void fileOut(std::string alg, std::vector<int>& vNums, int left, int right, int maxSum) {
 		
-		std::ofstream outFile; //("MSS_Results.txt");
+		std::ofstream outFile; 
 		
-		outFile.open("MSS_ResultsTESTING.txt", std::ofstream::app);
-		//outFile.open("MSS_Results.txt", std::ofstream::app);
-
-		/* //  moved this as a call from main function so it will only print once for each array
-		// export original array
-		outFile << "Original Array: ";
-		outFile << "[";
-		//int size = vNums.size();
-		for (int i = 0; i < vNums.size() - 1; i++) {
-			outFile << vNums[i] << ", ";
-		}
-		int end = vNums.size()-1;
-		outFile << vNums[end] << "]" << std::endl;
-		*/
+		//appends results to this file if it already exists. Did not want to risk erasing or clearing anyone else's data.µ
+		outFile.open("MSS_Results.txt", std::ofstream::app);
 		
+	
 		//export subarray
         outFile << alg << std::endl;
 		outFile << "[";
@@ -411,87 +404,15 @@ void fileOut(std::string alg, std::vector<int>& vNums, int left, int right, int 
 		outFile << "]"<<std::endl;
 		if(alg == "\n*** Original Array ***") {
 		outFile << std::endl;
-		}  // this is a hacky way of getting an extra line after the original array prints
+		}  // extra line after the original array prints
 
 	
 		//export maxSum
 		if (maxSum != NULL) {
 		outFile << maxSum << std::endl;
 		}
+		
 		outFile.close();			
 
-
 }
 
-/************************************************
-		testRunTime
- Generates 10 random vectors of 10 different n values
-  for each of 4 algorithms
-  
-*************************************************/
-
-
-void testRunTime() {
-
-	std::vector <int> vNums;
-	int rNum;
-	// Generate random numbers for testing
-	
-	//std::vector <int> inputSize = {100,200,400, 600, 800, 1000, 2000, 5000, 7000, 10000};
-	std::vector <int> inputSize = {100,200,400, 600, 800, 1000, 2000, 3000, 4000, 5000};
-	//std::vector <int> inputSize = {2,3,4, 6, 8, 10, 20, 50};  // smaller vector sizes for pre-test-testing
-	
-	srand((unsigned)time(NULL));
-	
-	for (int n = 0; n < inputSize.size(); n++) {  
-	for (int x = 0; x < 10; x++) {
-			vNums = {};
-			for (int m = 0; m<inputSize[n]; m++) {
-				rNum = rand()%199+ (-100);  //includes negative numbers as well
-				vNums.push_back(rNum);
-			
-				}
-		
-		  std::cout << "\nOriginal Array: " << "[";
-			for (int k = 0; k < vNums.size(); k++) {
-				
-				std::cout << vNums[k];
-				
-				if(k<vNums.size()-1) {
-				
-						std::cout<<", ";
-					}
-				}
-			
-			std::cout << "]" << std::endl;
-			
-			enumeration(vNums);
-			betterEnumeration(vNums);
-			divideAndConquer(vNums); 
-			linear(vNums);
-			
-		} // end x
-			
-	} // end n outer loop
-}
-
-
-
-void testManual() {
-
-//std::vector <int> vNums {1, 4, -9, 8, 1, 3, 3, 1, -1, -4, -6, 2, 8, 19, -10, -11};
-	//std::vector <int> vNums {2, 9, 8, 6, 5, -11, 9, -11, 7, 5, -1, -8, -3, 7, -2};
-	//std::vector <int> vNums {10, -11, -1, -9, 33, -45, 23, 24, -1, -7, -8, 19};
-	//std::vector <int> vNums {31,-41, 59, 26, -53, 58, 97, -93, -23, 84};
-	//std::vector <int> vNums {3, 2, 1, 1, -8, 1, 1, 2, 3};
-	//std::vector <int> vNums {12, 99, 99, -99, -27, 0, 0, 0, -3, 10};
-	//std::vector <int> vNums {-2, 1, -3, 4, -1, 2, 1, -5, 4};
-	//std::vector <int> vNums {-97, 35, 21, -35, 18, -99, 56, 74, 21, 20};
-	std::vector <int> vNums {29, -72, -6, -22, -7, -51, -21, -75, -38, -13};
-	
-	enumeration(vNums);
-	betterEnumeration(vNums);
-	divideAndConquer(vNums); 
-	linear(vNums);
-	
-}
